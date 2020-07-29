@@ -1,5 +1,5 @@
 //============================================================================//
-//                           Формирование отчетности                          //
+//                                                      //
 //============================================================================//
 function FormatDate()
 {
@@ -196,7 +196,7 @@ function getReportParamByTask(objXML, Task)
 
 	Result = new Array();
 
-	WriteLog('Получение параметров отчета с ID = ' + Task['Report'] + '.');
+	WriteLog('    ID = ' + Task['Report'] + '.');
 	objXML.ownerDocument.setProperty('SelectionLanguage', 'XPath');
 	Result['BASE'] = new Array();
 	Nodes = new Enumerator(objXML.selectNodes('/root/report'));
@@ -349,7 +349,7 @@ function getReportParamByTask(objXML, Task)
 						}
 						break;
 					}
-					WriteLog('Необязательный параметр ' + i + ' отчета с ID = ' + Task['Report'] + ' не определен и установлен в значение по умолчанию: ' + Result['PARAM'][i]['VALUE'] + '.');
+					WriteLog('  ' + i + '   ID = ' + Task['Report'] + '        : ' + Result['PARAM'][i]['VALUE'] + '.');
 				}
 			}
 			break;
@@ -357,13 +357,13 @@ function getReportParamByTask(objXML, Task)
 			{
 				if((Result['PARAM'][i]['VALUE'] == null))
 				{
-					throw new Error('Обязательный параметр "' + i + '" отчета с ID = ' + Task['Report'] + ' не определен.');
+					throw new Error('  "' + i + '"   ID = ' + Task['Report'] + '  .');
 				}
 			}
 			break;
 			default:
 			{
-				throw new Error('Обнаружено неизвестное значение тега "required" в описании параметров отчета с ID = ' + Task['Report'] + '.');
+				throw new Error('    "required"      ID = ' + Task['Report'] + '.');
 			}
 			break;
 		}
@@ -372,7 +372,7 @@ function getReportParamByTask(objXML, Task)
 	{
 		ID = Task['NORMDEP'].split('-');
 		Result['PARAM']['__BRANCH__'] = new Array();
-		Result['PARAM']['__BRANCH__']['NAME'] = 'Номер ОСБ:';
+		Result['PARAM']['__BRANCH__']['NAME'] = ' :';
 		Result['PARAM']['__BRANCH__']['TYPE'] = 'string';
 		Result['PARAM']['__BRANCH__']['VALUE'] = ID[0];
 		Result['PARAM']['__BRANCH__']['REQUIRED'] = '0';
@@ -382,13 +382,13 @@ function getReportParamByTask(objXML, Task)
 	{
 		ID = Task['NORMDEP'].split('-');
 		Result['PARAM']['__OFFICE__'] = new Array();
-		Result['PARAM']['__OFFICE__']['NAME'] = 'Номер ВСП:';
+		Result['PARAM']['__OFFICE__']['NAME'] = ' :';
 		Result['PARAM']['__OFFICE__']['TYPE'] = 'string';
 		Result['PARAM']['__OFFICE__']['VALUE'] = ID[1];
 		Result['PARAM']['__OFFICE__']['REQUIRED'] = '0';
 		ID = null;
 	}
-	WriteLog('Получение параметров отчета с ID = ' + Task['Report'] + ' завершено успешно.');
+	WriteLog('    ID = ' + Task['Report'] + '  .');
 
 	return Result;
 }
@@ -484,7 +484,7 @@ function ExecuteReportFile(objXML, objXSL, Config, Task)
 {
 	var Report, Message;
 
-	WriteLog('Формирование итогового файла отчета с ID = ' + Task['Report'] + '.');
+	WriteLog('     ID = ' + Task['Report'] + '.');
 	Report = getReportParamByTask(objXML, Task);
 	Message = new String();
 	Message = Message.concat('DOMAIN:');
@@ -509,7 +509,7 @@ function ExecuteReportFile(objXML, objXSL, Config, Task)
 	WriteFile(Config['HOME'] + '/' + 'OUT' + '/' + Task['NAME'], Message);
 	Message = null;
 	Report = null;
-	WriteLog('Формирование итогового файла отчета с ID = ' + Task['Report'] + ' завершено успешно.');
+	WriteLog('     ID = ' + Task['Report'] + '  .');
 
 	return 0;
 }
@@ -518,40 +518,40 @@ function ExecuteReportTask(objXML, objXSL, Config, Task)
 {
 	var Report, str, sql, i, k;
 
-	WriteLog('Запуск на исполнение отчета с ID = ' + Task['Report'] + '.');
+	WriteLog('     ID = ' + Task['Report'] + '.');
 	Report = getReportParamByTask(objXML, Task);
 	for(k in Report['EXEC'])
 	{
 		if((Report['EXEC'][k]['TYPE'] == 'sql'))
 		{
-			WriteLog('Подготовка SQL-запроса отчета с ID = ' + Task['Report'] + '.');
+			WriteLog(' SQL-   ID = ' + Task['Report'] + '.');
 			sql = ReadFile(Config['HOME'] + '/' + 'SQL' + '/' + Report['EXEC'][k]['COMMAND']);
 			for(i in Report['PARAM'])
 			{
 				sql = sql.replace(new RegExp(i, 'g'), Report['PARAM'][i]['VALUE']);
 			}
-			WriteLog('Подготовка SQL-запроса отчета с ID = ' + Task['Report'] + ' завершена успешно.');
-			WriteLog('SQL-запрос отчета с ID = ' + Task['Report'] + ':');
+			WriteLog(' SQL-   ID = ' + Task['Report'] + '  .');
+			WriteLog('SQL-   ID = ' + Task['Report'] + ':');
 			WriteLog(sql);
-			WriteLog('Подготовка ConnectionString отчета с ID = ' + Task['Report'] + '.');
+			WriteLog(' ConnectionString   ID = ' + Task['Report'] + '.');
 			str = new String();
 			str = str.concat('Provider=MSDAORA;Data Source=TNSNAME;User ID=USERLOGIN;Password=PASSWORD');
 			for(i in DBLink[Report['EXEC'][k]['DBLINK']])
 			{
 				str = str.replace(new RegExp(i, 'g'), DBLink[Report['EXEC'][k]['DBLINK']][i]);
 			}
-			WriteLog('Подготовка ConnectionString отчета с ID = ' + Task['Report'] + ' завершена успешно.');
-			WriteLog('ConnectionString отчета с ID = ' + Task['Report'] + ':');
+			WriteLog(' ConnectionString   ID = ' + Task['Report'] + '  .');
+			WriteLog('ConnectionString   ID = ' + Task['Report'] + ':');
 			WriteLog(str);
-			WriteLog('Формирование файла ' + Report['EXEC'][k]['NAME'] + ' отчета с ID = ' + Task['Report'] + '.');
+			WriteLog('  ' + Report['EXEC'][k]['NAME'] + '   ID = ' + Task['Report'] + '.');
 			XML2ZIP(XSL4XML(SQL2XML(str, sql), objXSL), Config['HOME'] + '/' + 'ARHIV' + '/' + Report['EXEC'][k]['NAME'], Config['HOME'] + '/' + 'ARHIV' + '/' + Task['ARCH']);
-			WriteLog('Формирование файла ' + Report['EXEC'][k]['NAME'] + ' отчета с ID = ' + Task['Report'] + ' завершено успешно.');
+			WriteLog('  ' + Report['EXEC'][k]['NAME'] + '   ID = ' + Task['Report'] + '  .');
 			str = null;
 			sql = null;
 		}
 	}
 	Report = null;
-	WriteLog('Запуск на исполнение отчета с ID = ' + Task['Report'] + ' завершен успешно.');
+	WriteLog('     ID = ' + Task['Report'] + '  .');
 
 	return 0;
 }
@@ -561,12 +561,12 @@ function ExecuteAllReports(objXML, objXSL, Config)
 	var objFS, FileName, Files, Name;
 
 	objFS = new ActiveXObject('Scripting.FileSystemObject');
-	WriteLog('Удаление старых файлов из каталога ' + Config['HOME'] + '/' + 'OUT' + '.');
+	WriteLog('     ' + Config['HOME'] + '/' + 'OUT' + '.');
 	DeleteFiles(Config['HOME'] + '/' + 'OUT', Config['HOWLONGKEEPFILES']);
-	WriteLog('Удаление старых файлов из каталога ' + Config['HOME'] + '/' + 'OUT' + ' завершено успешно.');
+	WriteLog('     ' + Config['HOME'] + '/' + 'OUT' + '  .');
 	if(!(objFS.GetFolder(Config['HOME'] + '/' + 'INQUEUE').Files.Count == 0))
 	{
-		throw new Error('Обнаружено параллельное выполнение запрошенной обработки.');
+		throw new Error('    .');
 	}
 	Files = new Enumerator(objFS.GetFolder(Config['HOME'] + '/' + 'IN').Files);
 	for((Files.moveFirst()); (!(Files.atEnd())); (Files.moveNext()))
@@ -580,10 +580,10 @@ function ExecuteAllReports(objXML, objXSL, Config)
 		try
 		{
 			Task = getTaskFromFile(Config['HOME'] + '/' + 'INQUEUE' + '/' + Name);
-			SendMessage(Config['SERVER'], Config['ADMIN'], Task['MAIL'], 'Ваш запрос поставлен в очередь. На Ваш почтовый адрес OutLook будет направлено сообщение о статусе формирования отчета.');
+			SendMessage(Config['SERVER'], Config['ADMIN'], Task['MAIL'], '    .     OutLook       .');
 			ExecuteReportTask(objXML, objXSL, Config, Task);
 			ExecuteReportFile(objXML, objXSL, Config, Task);
-			SendMessage(Config['SERVER'], Config['ADMIN'], Task['MAIL'], '<p>Здравствуйте!</p><p>Запрошенный Вами отчет находится по адресу <a href="http://tb52vbhelper.sb52.yzb.sbrf.ru/BankHelper/Downloads.aspx">http://tb52vbhelper.sb52.yzb.sbrf.ru/BankHelper/Downloads.aspx</a>.</p>');
+			SendMessage(Config['SERVER'], Config['ADMIN'], Task['MAIL'], '<p>!</p><p>      <a href=""></a>.</p>');
 			Task = null;
 		}
 		catch(ex)
@@ -593,15 +593,15 @@ function ExecuteAllReports(objXML, objXSL, Config)
 				objFS.DeleteFile(Config['HOME'] + '/' + 'ERRORS' + '/' + Name);
 			}
 			objFS.CopyFile(Config['HOME'] + '/' + 'INQUEUE' + '/' + Name, Config['HOME'] + '/' + 'ERRORS' + '/' + Name);
-			WriteLog('При обработке файла ' + Name + ' произошла ошибка:');
+			WriteLog('   ' + Name + '  :');
 			WriteLog(ex.message);
 			try
 			{
-				SendMessage(Config['SERVER'], Config['ADMIN'], Task['MAIL'], '<p>При обработке файла ' + Name + ' произошла ошибка:</p>' + '<p>' + ex.message + '</p>' + '<p>Пожалуйста, свяжитесь с Администратором подсистемы и перешлите ему это сообщение об ошибке.</p>');
+				SendMessage(Config['SERVER'], Config['ADMIN'], Task['MAIL'], '<p>   ' + Name + '  :</p>' + '<p>' + ex.message + '</p>' + '<p>,           .</p>');
 			}
 			catch(ex)
 			{
-				WriteLog('При отправке сообщения об обработке файла ' + Name + ' произошла ошибка:');
+				WriteLog('      ' + Name + '  :');
 				WriteLog(ex.message);
 			}
 		}
@@ -615,11 +615,11 @@ function ExecuteAllReports(objXML, objXSL, Config)
 	Files = null;
 	if(!(objFS.GetFolder(Config['HOME'] + '/' + 'INQUEUE').Files.Count == 0))
 	{
-		throw new Error('Обработка задания не выполнена.');
+		throw new Error('   .');
 	}
-	WriteLog('Удаление старых файлов из каталога ' + Config['HOME'] + '/' + 'ARHIV' + '.');
+	WriteLog('     ' + Config['HOME'] + '/' + 'ARHIV' + '.');
 	DeleteFiles(Config['HOME'] + '/' + 'ARHIV', Config['HOWLONGKEEPFILES']);
-	WriteLog('Удаление старых файлов из каталога ' + Config['HOME'] + '/' + 'ARHIV' + ' завершено успешно.');
+	WriteLog('     ' + Config['HOME'] + '/' + 'ARHIV' + '  .');
 	objFS = null;
 
 	return 0;
@@ -641,7 +641,7 @@ function Main()
 	}
 	catch(ex)
 	{
-		WriteLog('При выполнении операции произошла ошибка:');
+		WriteLog('    :');
 		WriteLog(ex.message);
 	}
 	WriteLog('Stop process.');
