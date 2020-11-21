@@ -1,2 +1,7 @@
-# report
-
+# Report
+This repository contains JS-scripts, executed by WScript in OS Windows.
+Main JS-script is used for execution different types of reports, based on SQL-scripts, and contains the following steps:
+- Reading configuration file, contained path to SQL-script and parameters, correspond to report to be executed.
+- Executing SQL-script with parameters on configured Oracle DB using ADODB Connection (Oracle Client needs to be installed).
+- Result rows are saved in ADODB XML-format.
+- Final result is transformed to Microsoft Excel Table 2003 XML format via XSLT transform.
