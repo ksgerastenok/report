@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="windows-1251" standalone="yes"?>
+<root>
+	<report id="2" name="Выгрузка количества открытых УДБО">
+		<params>
+			<param>
+				<id>__REPORTDAY__</id>
+				<type>date</type>
+				<name>По состоянию на:</name>
+				<required>1</required>
+			</param>
+		</params>
+		<batch>
+			<exec>
+				<id>edbo</id>
+				<type>sql</type>
+				<name>edbo.xml</name>
+				<dblink>BACK</dblink>
+				<command>edbo/edbo.sql</command>
+			</exec>
+		</batch>
+	</report>
+	<report id="3" name="Статистика по открытым депозитам">
+		<params>
+			<param>
+				<id>__BEGINDAY__</id>  
+				<type>date</type>
+				<name>Начало периода:</name>
+				<required>1</required>
+			</param>
+			<param>
+				<id>__ENDDAY__</id>
+				<type>date</type>
+				<name>Конец периода:</name>
+				<required>1</required>
+			</param>
+		</params>
+		<batch>
+			<exec>
+				<id>manchenko</id>
+				<type>sql</type>
+				<name>report.xml</name>
+				<dblink>BACK</dblink>
+				<command>manchenko/manchenko.sql</command>
+			</exec>
+		</batch>
+	</report>
+	<report id="4" name="Статистика по ф.190">
+		<params>
+			<param>
+				<id>__BEGINDAY__</id>  
+				<type>date</type>
+				<name>Начало периода:</name>
+				<required>1</required>
+			</param>
+			<param>
+				<id>__ENDDAY__</id>
+				<type>date</type>
+				<name>Конец периода:</name>
+				<required>1</required>
+			</param>
+		</params>
+		<batch>
+			<exec>
+				<id>stat190</id>
+				<type>sql</type>
+				<name>stat190.xml</name>
+				<dblink>FRONT</dblink>
+				<command>stat190/stat190.sql</command>
+			</exec>
+		</batch>
+	</report>
+	<report id="6" name="Статистика по коммунальным ф.190">
+		<params>
+		</params>
+		<batch>
+			<exec>
+				<id>f190</id>
+				<type>sql</type>
+				<name>f190.xml</name>
+				<dblink>FRONT</dblink>
+				<command>f190/f190.sql</command>
+			</exec>
+		</batch>
+	</report>
+	<report id="7" name="Отчет по зарплатным проектам">
+		<params>
+		</params>
+		<batch>
+			<exec>
+				<id>bdk</id>
+				<type>sql</type>
+				<name>bdk.xml</name>
+				<dblink>BACK</dblink>
+				<command>bdk/bdk.sql</command>
+			</exec>
+		</batch>
+	</report>
+	<report id="8" name="Статистика по обработке документов в КЗ УПД">
+		<params>
+			<param>
+				<id>__BEGINDAY__</id>
+				<type>date</type>
+				<name>Начало периода:</name>
+				<required>1</required>
+			</param>
+			<param>
+				<id>__ENDDAY__</id>
+				<type>date</type>
+				<name>Конец периода:</name>
+				<required>1</required>
+			</param>
+		</params>
+		<batch>
+			<exec>
+				<id>ruchnie</id>
+				<type>sql</type>
+				<name>fio.xml</name>
+				<dblink>FRONT</dblink>
+				<command>kzupdstat/part1.sql</command>
+			</exec>
+			<exec>
+				<id>osb</id>
+				<type>sql</type>
+				<name>osb.xml</name>
+				<dblink>FRONT</dblink>
+				<command>kzupdstat/part2.sql</command>
+			</exec>
+			<exec>
+				<id>razovie</id>
+				<type>sql</type>
+				<name>razovie.xml</name>
+				<dblink>FRONT</dblink>
+				<command>kzupdstat/part3.sql</command>
+			</exec>
+		</batch>
+	</report>
+	<report id="9" name="Отчет по карточной истории">
+		<params>
+			<param>
+				<id>__ACCOUNT__</id>
+				<type>string</type>
+				<name>Номер счета:</name>
+				<required>1</required>
+			</param>
+		</params>
+		<batch>
+			<exec>
+				<id>account</id>
+				<type>sql</type>
+				<name>rephist.xml</name>
+				<dblink>BACK</dblink>
+				<command>cardhist/repaccount.sql</command>
+			</exec>
+		</batch>
+	</report>
+	<report id="10" name="Отчет по ЭПД">
+		<params>
+			<param>
+				<id>__ACCOUNT__</id>
+				<type>string</type>
+				<name>Номер счета:</name>
+				<required>1</required>
+			</param>
+		</params>
+		<batch>
+			<exec>
+				<id>repepd</id>
+				<type>sql</type>
+				<name>repepd.xml</name>
+				<dblink>FRONT</dblink>
+				<command>depepd/repepd.sql</command>
+			</exec>
+		</batch>
+	</report>
+	<report id="11" name="Отчет по ТП">
+		<params>
+			<param>
+				<id>__BEGINDAY__</id>
+				<type>date</type>
+				<name>Начало периода:</name>
+				<required>1</required>
+			</param>
+			<param>
+				<id>__ENDDAY__</id>
+				<type>date</type>
+				<name>Конец периода:</name>
+				<required>1</required>
+			</param>
+		</params>
+		<batch>
+			<exec>
+				<id>reptp</id>
+				<type>sql</type>
+				<name>reptp.xml</name>
+				<dblink>BACK</dblink>
+				<command>reptp/reptp.sql</command>
+			</exec>
+		</batch>
+	</report>
+	<report id="12" name="Отчет по ф.190">
+		<params>
+			<param>
+				<id>__BEGINDAY__</id>
+				<type>date</type>
+				<name>Начало периода:</name>
+				<required>1</required>
+			</param>
+			<param>
+				<id>__ENDDAY__</id>
+				<type>date</type>
+				<name>Конец периода:</name>
+				<required>1</required>
+			</param>
+		</params>
+		<batch>
+			<exec>
+				<id>rep190</id>
+				<type>sql</type>
+				<name>rep190.xml</name>
+				<dblink>FRONT</dblink>
+				<command>rep190/rep190.sql</command>
+			</exec>
+		</batch>
+	</report>
+	<report id="14" name="Отчет по выданным дебетовым картам">
+		<params>
+			<param>
+				<id>__BEGINDAY__</id>
+				<type>date</type>
+				<name>Начало периода:</name>
+				<required>1</required>
+			</param>
+			<param>
+				<id>__ENDDAY__</id>
+				<type>date</type>
+				<name>Конец периода:</name>
+				<required>1</required>
+			</param>
+			<param>
+				<id>__IDMEGA__</id>
+				<type>string</type>
+				<name>Код ТБ:</name>
+				<required>1</required>
+			</param>
+		</params>
+		<batch>
+			<exec>
+				<id>debcard</id>
+				<type>sql</type>
+				<name>debcard.xml</name>
+				<dblink>FRONT</dblink>
+				<command>debcard/debcard.sql</command>
+			</exec>
+		</batch>
+	</report>
+	<report id="15" name="Отчет по доверенностям">
+		<params>
+			<param>
+				<id>__BEGINDAY__</id>
+				<type>date</type>
+				<name>Начало периода:</name>
+				<required>1</required>
+			</param>
+			<param>
+				<id>__ENDDAY__</id>
+				<type>date</type>
+				<name>Конец периода:</name>
+				<required>1</required>
+			</param>
+		</params>
+		<batch>
+			<exec>
+				<id>trusted</id>
+				<type>sql</type>
+				<dblink>BACK</dblink>
+				<name>reptrusted.xml</name>
+				<command>trusted/trusted.sql</command>
+			</exec>
+		</batch>
+	</report>
+</root>
